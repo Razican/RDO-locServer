@@ -1,4 +1,4 @@
-package utilities;
+package network;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

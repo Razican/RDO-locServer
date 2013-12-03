@@ -1,9 +1,13 @@
-package utilities;
+package network;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Iterator;
 import java.util.Vector;
+
+import utilities.CommandAnalizer;
+import utilities.Locator;
+
 
 /**
  * @author Razican (Iban Eguia)
