@@ -1,9 +1,17 @@
 package utilities;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import razican.db.NoDatabaseException;
+import razican.db.SQLite3db;
+
 /**
  * @author Razican (Iban Eguia)
  */
 public class Locator {
+
+	private static SQLite3db	db;
 
 	/**
 	 * Get the latitude of the given cell
@@ -13,8 +21,7 @@ public class Locator {
 	 */
 	public static double getLatitude(int cell)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return get("latitude", cell);
 	}
 
 	/**
@@ -25,8 +32,36 @@ public class Locator {
 	 */
 	public static double getLongitude(int cell)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return get("longitude", cell);
+	}
+
+	private static double get(String column, int cell)
+	{
+		if (db == null)
+		{
+			try
+			{
+				db = new SQLite3db("data/database");
+			}
+			catch (NoDatabaseException e)
+			{
+				System.err.println("La base de datos no existe");
+				System.exit(0);
+			}
+		}
+
+		ResultSet r = db.rawQuery("SELECT " + column + " FROM CELL WHERE id = "
+		+ cell + ";");
+		double data = 0;
+		try
+		{
+			data = r.getDouble(0);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return data;
 	}
 
 	/**
@@ -37,8 +72,30 @@ public class Locator {
 	 */
 	public static boolean isvalid(int cell)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		if (db == null)
+		{
+			try
+			{
+				db = new SQLite3db("data/database");
+			}
+			catch (NoDatabaseException e)
+			{
+				System.err.println("La base de datos no existe");
+				System.exit(0);
+			}
+		}
+		int rows = 0;
+		try
+		{
+			rows = db.rawQuery(
+			"SELECT COUNT * FROM CELL WHERE id = " + cell + ";").getInt(0);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+
+		return rows > 0;
 	}
 
 	/**
