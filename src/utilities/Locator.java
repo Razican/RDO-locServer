@@ -55,7 +55,7 @@ public class Locator {
 		double data = 0;
 		try
 		{
-			data = r.getDouble(0);
+			data = r.getDouble(1);
 		}
 		catch (SQLException e)
 		{
@@ -88,7 +88,7 @@ public class Locator {
 		try
 		{
 			rows = db.rawQuery(
-			"SELECT COUNT * FROM CELL WHERE id = " + cell + ";").getInt(0);
+			"SELECT COUNT * FROM CELL WHERE id = " + cell + ";").getInt(1);
 		}
 		catch (SQLException e)
 		{
@@ -107,7 +107,7 @@ public class Locator {
 	public static String format(double coordinate)
 	{
 		int degrees = (int) coordinate;
-		int minutes = (int) (coordinate - degrees) * 60;
+		int minutes = (int) ((coordinate - degrees) * 60);
 		double seconds = ((coordinate - degrees) * 60 - minutes) * 60;
 
 		return degrees + ":" + minutes + ":" + seconds;

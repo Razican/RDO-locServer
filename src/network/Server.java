@@ -2,12 +2,12 @@ package network;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.SocketException;
 import java.util.Iterator;
 import java.util.Vector;
 
 import utilities.CommandAnalizer;
 import utilities.Locator;
-
 
 /**
  * @author Razican (Iban Eguia)
@@ -44,6 +44,7 @@ public class Server {
 			{
 				try
 				{
+
 					Client c = new Client(server.accept());
 					clients.add(c);
 
@@ -71,6 +72,8 @@ public class Server {
 
 					System.out.println("Client " + c + " closed");
 				}
+				catch (SocketException e)
+				{}
 				catch (IOException e)
 				{
 					e.printStackTrace();

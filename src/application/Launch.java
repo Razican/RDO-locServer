@@ -24,13 +24,16 @@ public class Launch {
 	 */
 	public static void main(String[] args)
 	{
+		if (args.length != 1)
+		{
+			System.exit(1);
+		}
 		if (args[0].equals("init"))
 		{
 			File f = new File("data/database.sqlite3");
 
 			if ( ! f.exists())
 			{
-				f.mkdirs();
 				try
 				{
 					f.createNewFile();
@@ -92,7 +95,7 @@ public class Launch {
 
 							System.out.println(response);
 						}
-						catch (NullPointerException e)
+						catch (ArrayIndexOutOfBoundsException e)
 						{
 							System.err
 							.println("No se ha introducido la celda.");
@@ -111,13 +114,40 @@ public class Launch {
 	private static void init_db(SQLite3db db)
 	{
 		db.rawModify("CREATE TABLE USER ("
-		+ "\"id\" INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,"
+		+ "\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
 		+ "\"username\" TEXT NOT NULL UNIQUE, \"password\" TEXT NOT NULL);");
 
 		db.rawModify("CREATE TABLE CELL ("
-		+ "\"id\" INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT,"
+		+ "\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
 		+ "\"latitude\" REAL NOT NULL, \"longitude\" REAL NOT NULL);");
+		// TODO constraint check latitude && longitude
 
-		// TODO populate
+		// Users
+		db
+		.rawModify("INSERT INTO USER (username, password) VALUES (\"admin\", \"8cb2237d0679ca88db6464eac60da96345513964\");");
+
+		// Cells
+		db.rawModify("INSERT INTO CELL (latitude, longitude) VALUES "
+		+ "(40.25947,-2.4852691);");
+		db.rawModify("INSERT INTO CELL (latitude, longitude) VALUES "
+		+ "(42.65894,0.154869);");
+		db.rawModify("INSERT INTO CELL (latitude, longitude) VALUES "
+		+ "(50.561889,134.1877894);");
+		db.rawModify("INSERT INTO CELL (latitude, longitude) VALUES "
+		+ "(10.1984,-158.298189);");
+		db.rawModify("INSERT INTO CELL (latitude, longitude) VALUES "
+		+ "(-16.59478,85.91894);");
+		db.rawModify("INSERT INTO CELL (latitude, longitude) VALUES "
+		+ "(-25.64891,95.8819);");
+		db.rawModify("INSERT INTO CELL (latitude, longitude) VALUES "
+		+ "(19.8191561,89.4982);");
+		db.rawModify("INSERT INTO CELL (latitude, longitude) VALUES "
+		+ "(-16.849,8.949);");
+		db.rawModify("INSERT INTO CELL (latitude, longitude) VALUES "
+		+ "(42.16894,-2.16849);");
+		db.rawModify("INSERT INTO CELL (latitude, longitude) VALUES "
+		+ "(41.6548,-1.949856);");
+
+		db.close();
 	}
 }
