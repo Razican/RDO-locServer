@@ -18,6 +18,7 @@ public class Client {
 	private String				user;
 	private String				id;
 	private boolean				open;
+	private boolean				isAuthenticated;
 
 	/**
 	 * Creates a new client
@@ -33,6 +34,7 @@ public class Client {
 		socket.getInputStream()));
 		this.id = UUID.randomUUID().toString();
 		this.open = true;
+		this.isAuthenticated = false;
 	}
 
 	/**
@@ -101,6 +103,14 @@ public class Client {
 	}
 
 	/**
+	 * @return If the user is authenticated
+	 */
+	public boolean isAuthenticated()
+	{
+		return isAuthenticated;
+	}
+
+	/**
 	 * Sets the user for the client
 	 * 
 	 * @param user - The user for the client
@@ -118,8 +128,8 @@ public class Client {
 	 */
 	public boolean checkPassword(String password)
 	{
-		return user != null && user.equals("admin")
-		&& password.equals("8cb2237d0679ca88db6464eac60da96345513964"); // pass:12345
+		return isAuthenticated = (user != null && user.equals("admin") && password
+		.equals("8cb2237d0679ca88db6464eac60da96345513964")); // pass:12345
 	}
 
 	@Override

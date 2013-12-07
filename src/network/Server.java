@@ -57,14 +57,14 @@ public class Server {
 
 					while ((line = c.read()) != null
 					&& ! CommandAnalizer.getCommand(line).equals("SALIR")
-					&& ! c.isOpen())
+					&& c.isOpen())
 					{
 						doCommand(line, c);
 					}
 
 					if (line != null)
 					{
-						c.write("318 OK Adiós.");
+						c.write("318 OK Adios.");
 					}
 
 					c.close();
@@ -91,7 +91,7 @@ public class Server {
 				if (user != null)
 				{
 					c.setUser(user);
-					c.write("311 OK Bienvenido" + user + ".");
+					c.write("311 OK Bienvenido " + user + ".");
 				}
 				else
 				{
@@ -116,26 +116,30 @@ public class Server {
 					c.write("513 ERR Falta la clave.");
 				}
 			break;
-			case "GETCOORD":
-				String cell = CommandAnalizer.getParameter(line);
-				int cellInt;
-				if (cell != null
-				&& Locator.isvalid(cellInt = Integer.parseInt(cell)))
+			case "GETCOOR":
+				if (c.isAuthenticated())
 				{
-					String response = "224 OK ";
-					response += Locator.format(Locator.getLatitude(cellInt))
-					+ ";";
-					response += Locator.format(Locator.getLongitude(cellInt));
+					String cell = CommandAnalizer.getParameter(line);
+					int cellInt;
+					if (cell != null
+					&& Locator.isvalid(cellInt = Integer.parseInt(cell)))
+					{
+						String response = "224 OK ";
+						response += Locator
+						.format(Locator.getLatitude(cellInt)) + ";";
+						response += Locator.format(Locator
+						.getLongitude(cellInt));
 
-					c.write(response);
-				}
-				else if (cell == null)
-				{
-					c.write("528 ERR Falta parámetro cell_id.");
-				}
-				else
-				{
-					c.write("527 ERR Celda desconocida.");
+						c.write(response);
+					}
+					else if (cell == null)
+					{
+						c.write("528 ERR Falta parámetro cell_id.");
+					}
+					else
+					{
+						c.write("527 ERR Celda desconocida.");
+					}
 				}
 		}
 	}
