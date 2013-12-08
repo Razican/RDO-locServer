@@ -7,6 +7,7 @@ import network.Server;
 import razican.db.NoDatabaseException;
 import razican.db.SQLite3db;
 import razican.utils.KeyboardUtils;
+import utilities.CommandAnalizer;
 import utilities.Locator;
 
 /**
@@ -82,24 +83,42 @@ public class Launch {
 				String command;
 				while ( ! (command = KeyboardUtils.readString()).equals("exit"))
 				{
-					if (command.contains("GETCOORD"))
+					if (command.contains("GETCOOR"))
 					{
 						try
 						{
-							int cell = Integer.parseInt(command.split(" ")[1]);
-							String response = "224 OK ";
-							response += Locator.format(Locator
-							.getLatitude(cell)) + ";";
-							response += Locator.format(Locator
-							.getLongitude(cell));
+							String cell = CommandAnalizer.getParameter(command);
+							int cellInt;
+							if (cell != null
+							&& Locator
+							.isvalid(cellInt = Integer.parseInt(cell)))
+							{
+								String response = "224 OK ";
+								response += Locator.format(Locator
+								.getLatitude(cellInt)) + ";";
+								response += Locator.format(Locator
+								.getLongitude(cellInt));
 
-							System.out.println(response);
+								System.out.println(response);
+							}
+							else if (cell == null)
+							{
+								System.err
+								.println("528 ERR Falta parámetro cell_id.");
+							}
+							else
+							{
+								System.err
+								.println("527 ERR Celda desconocida.");
+							}
 						}
 						catch (ArrayIndexOutOfBoundsException e)
 						{
 							System.err
 							.println("No se ha introducido la celda.");
 						}
+						catch (NumberFormatException e)
+						{}
 					}
 				}
 				server.close();
