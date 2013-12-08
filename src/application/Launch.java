@@ -112,11 +112,6 @@ public class Launch {
 								.println("527 ERR Celda desconocida.");
 							}
 						}
-						catch (ArrayIndexOutOfBoundsException e)
-						{
-							System.err
-							.println("No se ha introducido la celda.");
-						}
 						catch (NumberFormatException e)
 						{}
 					}
