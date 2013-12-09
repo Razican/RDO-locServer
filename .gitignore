@@ -7,3 +7,5 @@
 *.ear
 /bin
 /data
+
+*.pdf
