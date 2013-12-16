@@ -83,7 +83,8 @@ public class Launch {
 				String command;
 				while ( ! (command = KeyboardUtils.readString()).equals("exit"))
 				{
-					if (command.contains("GETCOOR"))
+					if (command.contains("GETCOOR")
+					&& ! command.contains("GETCOORD"))
 					{
 						try
 						{
